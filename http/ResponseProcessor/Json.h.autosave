@@ -1,0 +1,26 @@
+#ifndef JSON_REQUEST_PROCESSOR_H
+#define JSON_REQUEST_PROCESSOR_H
+
+#include "QtNetwork/QNetworkReply"
+#include <QObject>
+#include <QtCore>
+#include "QJsonDocument"
+#include "QJsonObject"
+#include <iostream>
+#include "AbstractProcessor.h"
+
+class JsonRequestProcessor: public virtual AbstractRequestProcessor
+{
+
+public:
+    virtual void setCallbacks(const std::function<void(QJsonObject)> &onResolve,
+                          const std::function<void(QString)> &onReject)
+        {
+            this->onResolve = &onResolve;
+            this->onReject = &onReject;
+        }
+    
+        QJsonObject (QNetworkReply*);
+
+};
+#endif // JSON_REQUEST_PROCESSOR_H

@@ -1,0 +1,6 @@
+#ifndef REQUEST_GET_MAIN_PAGE
+#define REQUEST_GET_MAIN_PAGE
+
+#include "AbstractRequest.h"
+
+#endif // REQUEST_GET_MAIN_PAGE
