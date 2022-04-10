@@ -16,7 +16,7 @@ public:
 
         this->request.setRawHeader("Content-Type", "application/json");
         this->request.setRawHeader("Accept", "application/json");
-        this->request.setRawHeader("User-Agent", "MyApp v0.1");
+        //this->request.setRawHeader("User-Agent", "MyApp v0.1");
 
     }
 
@@ -31,12 +31,6 @@ public:
     }
 
     QNetworkRequest request;
-public slots:
-
-    virtual void onReady(QNetworkReply *reply)
-    {
-
-    }
 };
 
 #endif // ABSTRACT_REQUEST_H

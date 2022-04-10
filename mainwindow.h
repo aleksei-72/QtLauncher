@@ -5,7 +5,7 @@
 #include "qmovie.h"
 #include "QResizeEvent"
 #include "QShowEvent"
-
+#include "QLabel"
 #include "http/Requestors.h"
 
 QT_BEGIN_NAMESPACE
@@ -28,6 +28,7 @@ private:
 
     QPixmap backgroundImage;
 
+    QVector<QLabel> socialNetworkElements;
 
 private slots:
     void resizeEvent(QResizeEvent *event);

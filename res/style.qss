@@ -1,0 +1,12 @@
+QGroupBox#socialBox {
+	background-color: rgba(0, 0, 0, 120);
+	border: 0;
+}
+
+QPushButton#launchButton {
+	border: 1px solid black;
+	border-radius: 5px;
+	
+	background-color: #ffce04;
+	
+}

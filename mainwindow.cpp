@@ -12,7 +12,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     this->api = new ApiRequestor(this);
     this->external = new ExternalRequestor(this);
-    this->resize(this->size());
+
+    QFile file("res/style.qss");
+    file.open(QFile::ReadOnly);
+    qApp->setStyleSheet(file.readAll());
 
     GetMainPageRequest request;
     this->api->request(&request, [&](QJsonObject body) {
@@ -26,25 +29,39 @@ MainWindow::MainWindow(QWidget *parent)
 
             QImage background = QImage::fromData(body);
 
-            /*
-            // TODO: add cache
-            if (!background.save("bg.jpg"))
-            {
-                qDebug() << "fail for write file";
-                return;
-            }*/
-
             this->backgroundImage = QPixmap::fromImage(background);
-            this->ui->backGroundLabel->setPixmap(this->backgroundImage.scaled(this->size().width(), this->size().height()));
-            this->ui->backGroundLabel->show();
 
-            this->resize(this->size());
-
-            qDebug() << "ok";
+            this->resizeEvent(new QResizeEvent(this->size(), this->size()));
         }, [](QString error) {
             qDebug() << error;
         });
 
+        QJsonArray socialNetworks = body["socialNetworks"].toArray();
+
+        for (QJsonArray::iterator it = socialNetworks.begin(); it != socialNetworks.end(); it++)
+        {
+            QString link = it->toObject()["link"].toString();
+            QString imgUrl = it->toObject()["imgUrl"].toString();
+
+            RawGetRequest networkIconRequest(imgUrl);
+            this->external->request(&networkIconRequest, [&](QByteArray body) {
+
+                QImage img = QImage::fromData(body);
+
+                QLabel *element = new QLabel(this);
+                //element.setText(link);
+
+                element->setPixmap(QPixmap::fromImage(img));
+                element->setGeometry(0, 0, 40, 40);
+
+                this->ui->socialNetworkLayout->addWidget(element);
+
+            }, [](QString error) {
+                qDebug() << error;
+            });
+
+
+        }
     }, [](QString error) {
         qDebug() << error;
     });
